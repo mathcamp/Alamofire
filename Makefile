@@ -40,7 +40,11 @@ lib$(MODULE_NAME).a: $(BUILD)lib$(MODULE_NAME)-$(DEVICE_TARGET).a $(BUILD)lib$(M
 	lipo -create $^ -output $(BUILD)$@
 
 modules: $(SRCS)
-	xcrun swiftc -emit-module $(SRCS) -sdk $(DEVICE_SDK_PATH) -target $(DEVICE_TARGET) -module-name $(MODULE_NAME) #-o $(BUILD) #NOTE: using -o omits the *.swiftdoc for some reason
+		#cd $(BUILD)$(DEVICE_TARGET)-out/ && xcrun swiftc -emit-module $(SRCS) -sdk $(DEVICE_SDK_PATH) -target $(DEVICE_TARGET) -module-name $(MODULE_NAME)
+		#cd $(BUILD)$(DEVICE_TARGET2)-out/ && xcrun swiftc -emit-module $(SRCS) -sdk $(DEVICE_SDK_PATH) -target $(DEVICE_TARGET2) -module-name $(MODULE_NAME)
+		#cd $(BUILD)$(SIMULATOR_TARGET)-out/ && xcrun swiftc -emit-module $(SRCS) -sdk $(DEVICE_SDK_PATH) -target $(SIMULATOR_TARGET) -module-name $(MODULE_NAME)
+		#cd $(BUILD)$(SIMULATOR_TARGET2)-out/ && xcrun swiftc -emit-module $(SRCS) -sdk $(DEVICE_SDK_PATH) -target $(SIMULATOR_TARGET2) -module-name $(MODULE_NAME)
+	xcrun swiftc -emit-module $(SRCS) -sdk $(SIMULATOR_SDK_PATH) -target $(SIMULATOR_TARGET) -module-name $(MODULE_NAME) #-o $(BUILD) #NOTE: using -o omits the *.swiftdoc for some reason
 	mv $(MODULE_NAME).swiftmodule $(BUILD)
 	mv $(MODULE_NAME).swiftdoc $(BUILD)
 
