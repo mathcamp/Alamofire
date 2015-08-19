@@ -1,6 +1,6 @@
 // MasterViewController.swift
 //
-// Copyright (c) 2014 Alamofire (http://alamofire.org)
+// Copyright (c) 2014–2015 Alamofire (http://alamofire.org)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -52,10 +52,15 @@ class MasterViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let detailViewController = segue.destinationViewController.topViewController as? DetailViewController {
             func requestForSegue(segue: UIStoryboardSegue) -> Request? {
-                switch segue.identifier {
-                    case "GET", "POST", "PUT", "DELETE":
-                        let method = Alamofire.Method.fromRaw(segue.identifier)!
-                        return Alamofire.request(method, HTTPBinRoute.Method(method))
+                switch segue.identifier as String! {
+                    case "GET":
+                        return Alamofire.request(.GET, "http://httpbin.org/get")
+                    case "POST":
+                        return Alamofire.request(.POST, "http://httpbin.org/post")
+                    case "PUT":
+                        return Alamofire.request(.PUT, "http://httpbin.org/put")
+                    case "DELETE":
+                        return Alamofire.request(.DELETE, "http://httpbin.org/delete")
                     default:
                         return nil
                 }

@@ -1,6 +1,6 @@
 // UploadTests.swift
 //
-// Copyright (c) 2014 Alamofire (http://alamofire.org)
+// Copyright (c) 2014–2015 Alamofire (http://alamofire.org)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -55,9 +55,9 @@ class UploadResponseTestCase: XCTestCase {
         upload.progress { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
             expectation.fulfill()
 
-            XCTAssertGreaterThan(bytesWritten, 0, "bytesWritten should be > 0")
-            XCTAssertGreaterThan(totalBytesWritten, 0, "totalBytesWritten should be > 0")
-            XCTAssertGreaterThan(totalBytesExpectedToWrite, 0, "totalBytesExpectedToWrite should be > 0")
+            XCTAssert(bytesWritten > 0, "bytesWritten should be > 0")
+            XCTAssert(totalBytesWritten > 0, "totalBytesWritten should be > 0")
+            XCTAssert(totalBytesExpectedToWrite > 0, "totalBytesExpectedToWrite should be > 0")
 
             upload.cancel()
         }

@@ -1,6 +1,6 @@
 // MasterViewController.swift
 //
-// Copyright (c) 2014 Alamofire (http://alamofire.org)
+// Copyright (c) 2014–2015 Alamofire (http://alamofire.org)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,13 +32,13 @@ enum HTTPBinRoute: URLStringConvertible {
         let path: String = {
             switch self {
             case .Method(let method):
-                return "/\(method.toRaw().lowercaseString)"
+                return "/\(method.rawValue.lowercaseString)"
             case .BasicAuth(let user, let password):
                 return "/basic-auth/\(user)/\(password)"
             }
         }()
 
-        return NSURL(string: path, relativeToURL: NSURL(string: baseURLString)).absoluteString!
+        return NSURL(string: path, relativeToURL: NSURL(string: baseURLString))!.absoluteString!
     }
 }
 
