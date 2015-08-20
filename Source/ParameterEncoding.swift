@@ -53,7 +53,7 @@ public enum ParameterEncoding {
     /**
         Uses `NSJSONSerialization` to create a JSON representation of the parameters object, which is set as the body of the request. The `Content-Type` HTTP header field of an encoded request is set to `application/json`.
     */
-    case JSON
+    case JSON(gzipped: Bool)
 
     /**
         Uses `NSPropertyListSerialization` to create a plist representation of the parameters object, according to the associated format and write options values, which is set as the body of the request. The `Content-Type` HTTP header field of an encoded request is set to `application/x-plist`.
@@ -115,12 +115,22 @@ public enum ParameterEncoding {
 
                 mutableURLRequest.HTTPBody = query(parameters!).dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
             }
-        case .JSON:
+        case .JSON(let gzipped):
             let options = NSJSONWritingOptions.allZeros
 
             if let data = NSJSONSerialization.dataWithJSONObject(parameters!, options: options, error: &error) {
-                mutableURLRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+              mutableURLRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+              
+              if gzipped {
+                if let gzippedData = data.gzippedData() {
+                  mutableURLRequest.setValue("gzip", forHTTPHeaderField:"Content-Encoding")
+                  mutableURLRequest.HTTPBody = gzippedData
+                } else {
+                  mutableURLRequest.HTTPBody = data
+                }
+              } else {
                 mutableURLRequest.HTTPBody = data
+              }
             }
         case .PropertyList(let (format, options)):
             if let data = NSPropertyListSerialization.dataWithPropertyList(parameters!, format: format, options: options, error: &error) {
